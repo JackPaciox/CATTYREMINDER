@@ -1,0 +1,102 @@
+/* Custom layout after main layout logic */
+
+:root{
+    --primary-color: #00a990;
+    --secondary-color:;
+    --warning-color: #e9d64e;
+}
+
+body.index-page{
+    margin:0px;
+    padding: 0px;
+    background-image: url("./assets/background-index.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+/****** DEBUG ******/
+.bor-red{
+    border: 1px solid red;
+}
+
+/****** END DEBUG ******/
+
+.w-45{
+    width: 45%;
+}
+
+.w-50{
+    width: 50%;
+}
+
+.read-prod{
+margin-top:80px;
+}
+.text-center{
+    text-align: center;
+}
+
+a.button{
+    font-size: 30px;
+    display: inline-block;
+    border: 1px solid  var(--primary-color);
+    background-color:  var(--primary-color);
+    padding: 15px 10px;
+    margin: 0px 30px;
+    border-radius: 40px;
+}
+
+a.button-back{
+    font-size: 30px;
+        display: inline-block;
+        border: 1px solid  var(--warning-color);
+        background-color:  var(--warning-color);
+        padding: 15px 10px;
+        margin: 0px 30px;
+        border-radius: 40px;
+}
+.login-form{
+    width: 100%;
+    margin: auto;
+}
+
+.main-index > div > div{
+    margin-top:100px;
+}
+.main-login{
+
+}
+.main-login > div{
+    margin-top: 50px;
+    text-align:center;
+}
+
+.flex-row{
+    display:flex;
+}
+
+.signup-form > .flex-row{
+    justify-content: space-around;
+}
+
+.main-signup{
+    width: 800px;
+    margin: auto;
+}
+.signup-form{
+    width:100%;
+}
+
+.up-user-form{
+    width: 30%;
+    margin: 0 35%;
+}
+
+.main-manager{
+    margin-top: 40px;
+}
+
+.filter-form{
+    width:100%;
+}
