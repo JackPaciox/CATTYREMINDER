@@ -1,43 +1,35 @@
 package it.contrader.converter;
+import it.contrader.dto.CenterDTO;
+import it.contrader.model.Product;
+import it.contrader.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import it.contrader.dto.CenterDTO;
+
 import it.contrader.model.Center;
+@Component
+public class CenterConverter extends AbstractConverter <Center,CenterDTO> {
 
-import java.util.ArrayList;
-import java.util.List;
+    @Autowired
+    private UserConverter converter;
 
-public class CenterConverter implements Converter<Center,CenterDTO>{
-    public CenterDTO toDTO(Center center) {
-    CenterDTO centerDTO = new CenterDTO(center.getId(), center.getUser_id(), center.getCentername(), center.getCenteraddress(), center.getCentercity(), center.getCenterprovince());
-    return centerDTO;
-}
-
-    /**
-     * Crea un oggetto di tipo User e lo riempie con i campi del parametro user di tipo UserDTO.
-     * Notare l'uso del metodo get() per ottenere il valore dell'attributo-
-     */
+    @Override
     public Center toEntity(CenterDTO centerDTO) {
-        Center center = new Center(centerDTO.getId(), centerDTO.getUser_id() , centerDTO.getCentername(), centerDTO.getCenteraddress(), centerDTO.getCentercity(), centerDTO.getCenterprovince());
+        Center center = null;
+        if (centerDTO != null) {
+            center = new Center(centerDTO.getId(), centerDTO.getName(), centerDTO.getDescription(), centerDTO.getAddress(), centerDTO.getZipcode(), centerDTO.getCity(), centerDTO.getProvince(), centerDTO.getPhone(), centerDTO.getEmail(), centerDTO.getWebSite(), converter.toEntity( centerDTO.getUser()), centerDTO.getProducts());
+        }
         return center;
     }
 
-    /**
-     * Metodo per convertire le liste di Center.
-     */
-    public List<CenterDTO> toDTOList(List<Center> centerList) {
-        //Crea una lista vuota.
-        List<CenterDTO> centerDTOList = new ArrayList<CenterDTO>();
+    @Override
+    public CenterDTO toDTO(Center center) {
+        CenterDTO centerDTO = null;
+        if (center != null) {
+            centerDTO = new CenterDTO(center.getId(), center.getName(), center.getDescription(), center.getAddress(),center.getCity(), center.getZipcode(), center.getProvince(), center.getPhone(), center.getEmail(), center.getWebSite(), converter.toEntity(center.getUser()), center.getProducts());
 
-        //Cicla tutti gli elementi della lista e li converte uno a uno
-        for(Center center : centerList) {
-            //Utilizza il metodo toDTO per convertire ogni singolo elemento della lista
-            //e lo aggiunge adda lista di DTO
-            centerDTOList.add(toDTO(center));
         }
-        return centerDTOList;
+        return centerDTO;
     }
-
-
-
 }
-

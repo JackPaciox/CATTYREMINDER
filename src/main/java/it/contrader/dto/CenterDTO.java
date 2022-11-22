@@ -1,94 +1,39 @@
 package it.contrader.dto;
 
-public class CenterDTO implements DTO {
+import it.contrader.model.Product;
+import it.contrader.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    private int id;
+import java.util.List;
 
-    private String centername;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 
-    private String centeraddress;
+public class CenterDTO {
+    private Long id;
 
-    private String centercity;
+    private String name;
 
-    private String centerprovince;
+    private String description;
 
-    private int user_id;
+    private String address;
 
-    public CenterDTO() {
+    private String zipcode;
 
-    }
+    private String city;
 
-    public CenterDTO (int user_id, String centername, String centeraddress, String centercity, String centerprovince) {
-        this.user_id = user_id;
-        this.centername = centername;
-        this.centeraddress = centeraddress;
-        this.centercity = centercity;
-        this.centerprovince = centerprovince;
-    }
+    private String province;
 
-    public CenterDTO (int id, int user_id, String centername, String centeraddress, String centercity, String centerprovince) {
-        this.id = id;
-        this.centername = centername;
-        this.centeraddress = centeraddress;
-        this.centercity = centercity;
-        this.centerprovince = centerprovince;
-        //da modificare in center_id anche su db.
-        this.user_id = user_id;
-    }
+    private String phone;
 
-    public int getId() {
-        return id;
-    }
+    private String email;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    private String webSite;
 
-    public String getCentername() {
-        return centername;
-    }
+    private UserDTO user;
 
-    public void setCentername(String centername) {
-        this.centername = centername;
-    }
-
-    public String getCenteraddress() {
-        return centeraddress;
-    }
-
-    public void setCenteraddress(String centeraddress) {
-        this.centeraddress = centeraddress;
-    }
-
-    public String getCentercity() {
-        return centercity;
-    }
-
-    public void setCentercity(String centercity) {
-        this.centercity = centercity;
-    }
-
-    public String getCenterprovince() {
-        return centerprovince;
-    }
-
-    public void setCenterprovince(String centerprovince) {
-        this.centerprovince = centerprovince;
-    }
-
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-
-    @Override
-    public String toString() {
-        return  id + "\t"  + centername +"\t\t" +   centeraddress + "\t\t" + centercity + "\t\t" + centerprovince;
-    }
-
-
+    private List<Product> products;
 }

@@ -1,43 +1,35 @@
 package it.contrader.service;
 
 import it.contrader.converter.CenterConverter;
-import it.contrader.dao.CenterDAO;
+import it.contrader.converter.UserConverter;
+import it.contrader.dao.CenterRepository;
 import it.contrader.dto.CenterDTO;
+import it.contrader.dto.UserDTO;
 import it.contrader.model.Center;
+import it.contrader.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
+public class CenterService extends AbstractService <Center, CenterDTO> {
+    @Autowired
+    private CenterConverter converter;
+    @Autowired
+    private UserConverter userConverter;
+    @Autowired
+    private CenterConverter centerConverter;
+    @Autowired
+    private CenterRepository repository;
 
-/**
- * 
- * @author Vittorio
- *
- *Grazie all'ereditarietà mi basta specificare i tipi di questa classe per
- *ereditare i metodi della clase AbstractService. Pertanto la classe risulta meno complicata
- *da scrivere, facendoci risparmiare tempo e fatica!
- */
-public class CenterService extends AbstractService<Center, CenterDTO> {
+    public List<CenterDTO> getAllByUser(UserDTO user) {
+        return converter.toDTOList(repository.findByUser(userConverter.toEntity(user)));
+    }
 
-	//Istanzio DAO  e Converter specifici.
-	public CenterService(){
-		this.dao = new CenterDAO();
-		this.converter = new CenterConverter();
-	}
+    public List<CenterDTO> getAllByUserIsNot(UserDTO user) {
+        return converter.toDTOList(repository.findByUserNot(userConverter.toEntity(user)));
+    }
 
-	@Override
-	public boolean delete(int id) {
-			CenterDAO centerdao = new CenterDAO();
-			return centerdao.delete(id);
-	}
-	public List<CenterDTO> getAllMain(int id){
-		CenterDAO centerdao = new CenterDAO();
-		CenterConverter centerConverter = new CenterConverter();
-		return centerConverter.toDTOList(centerdao.getAllMain(id));
-	}
-
-	public List<CenterDTO> getAllOfCenter(int id){
-		CenterDAO centerdao = new CenterDAO();
-		CenterConverter centerConverter = new CenterConverter();
-		return centerConverter.toDTOList(centerdao.getAllAdmin(id));
-	}
-
+    //public List<CenterDTO> findByCity(String city, String address) {
+        //return converter.toDTOList(repository.findByCity(city, address));
 }

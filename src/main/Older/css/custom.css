@@ -1,0 +1,262 @@
+ * {
+     box-sizing: border-box;
+ }
+
+.shown {
+    display:inline-block;
+}
+.hidden {
+    display: none;
+}
+.row {
+    position:relative;
+    float:left;
+    width:100%
+}
+.login-container {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+div.login {
+    position: relative;
+    /* height: auto; */
+    margin: auto;
+    top: 20%;
+    /* transform: translate(-50%, -50%); */
+    max-width: 450px;
+    float: none;
+}
+
+div.login form {
+    position: relative;
+    width: 100%;
+    float: left;
+    box-sizing: border-box;
+}
+
+div.login h3.header {
+    font-size:2em
+}
+
+.navbar.home .home-btn,
+.navbar.users .users-btn,
+.navbar.centers .centers-btn,
+.navbar.products .products-btn,
+.navbar.orders .orders-btn
+{
+    background: #00ccad;
+    color: #ffffff;
+}
+
+.main {
+    position: relative;
+    margin: 20px auto;
+    padding: 0 2%;
+    float: left;
+    width: 96%;
+}
+
+.main table {
+    width: 95%;
+    position: relative;
+    margin: auto;
+    float: none;
+    max-width: 100%;
+}
+
+.main form.insert {
+    position:relative;
+    float:left;
+    width:100%;
+    box-sizing: border-box;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.main h3, .login-container h3 {
+    background-color:#00a990;
+    color:#ffffff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin:7px 0 0 0;
+    padding:10px
+}
+
+.main table thead th:first-child {
+    border-top-left-radius: 5px;
+}
+
+.main table thead th:last-child {
+    border-top-right-radius: 5px;
+}
+
+.closeInsert {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    color: #ffffff;
+    font-size: 2.5em;
+    cursor: pointer;
+    line-height: 1.5em;
+}
+
+a.add-item-btn:link,
+a.add-item-btn:visited,
+a.add-item-btn:hover,
+a.back-btn:link,
+a.back-btn:visited,
+a.back-btn:hover,
+a.item-btn:link,
+a.item-btn:visited,
+a.item-btn:hover
+{
+    position: relative;
+    float: left;
+    margin: 10px 5px 0 0;
+    padding: 10px;
+    background-color: #dedede;
+    border-radius: 5px;
+}
+table a.item-btn:link,
+table a.item-btn:visited,
+table a.item-btn:hover
+{
+    font-size:12px;
+    font-weight: bold;
+    margin:0
+}
+
+a.add-item-btn:hover {
+    background-color: #06dabb;
+    color:#ffffff
+}
+
+#insertForm,#updateForm,#insertFormProduct {
+    display:none;
+    width: 480px;
+    margin: auto;
+    float: none;
+}
+
+.main.update #updateForm {
+    display:block
+}
+#headerAbsolute {
+
+}
+#footerAbsolute {
+    position: relative;
+    left: 2%;
+    /* bottom: 30px; */
+    height: auto;
+    width: 96%;
+    margin: 30px 0;
+    text-align: center;
+    box-sizing: border-box;
+    float: left;
+}
+
+.errorContainer {
+    position:absolute;
+    height:auto;
+    width:100%;
+    bottom: 30px;
+}
+
+.errorDisplay {
+    position: relative;
+    margin: auto;
+    padding: 3px 30px;
+    background-color: red;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    opacity: .7;
+    max-width:500px;
+}
+
+.footer {
+    margin:0!important
+}
+
+.ellipsize {
+    word-wrap: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    /* width: 120px; */
+    display: block;
+}
+
+table span.ellipsize {
+    max-width: 200px;
+}
+
+.hidden-form {
+    display: none;
+    visibility: hidden;
+}
+
+.login-container form.insert {
+    width:100%;
+    box-sizing: border-box;
+}
+
+.login-container h3 {
+    margin:0;
+    padding:20px
+}
+
+.text-align-center {
+    text-align: center
+}
+
+a.float-none:link,
+a.float-none:visited,
+a.float-none:hover
+{
+    float:none;
+    margin:auto
+}
+
+#myAccount a:link, #myAccount a:visited, #myAccount a:hover {
+    float: right;
+}
+
+.legendForm {
+    font-size:12px;
+    color:red
+}
+
+.requiredFields {
+    color:red
+}
+#productOffersFilter {
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+}
+
+.header {
+    text-align: center;
+    font-size: 800%;
+    font-family: sans-serif;
+    color: #00a990;
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+#myAccount {
+    position: relative;
+    width: 100%;
+    float: left;
+}
+
+#selectContainer {
+    position:relative;
+    float:right;
+}

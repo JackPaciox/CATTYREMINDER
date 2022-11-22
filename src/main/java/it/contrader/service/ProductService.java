@@ -1,50 +1,148 @@
 package it.contrader.service;
 
+import it.contrader.converter.CenterConverter;
+import it.contrader.converter.UserConverter;
+import it.contrader.dao.CenterRepository;
+import it.contrader.dto.CenterDTO;
+import it.contrader.dto.UserDTO;
+import it.contrader.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.stereotype.Service;
+
 import it.contrader.converter.ProductConverter;
-import it.contrader.dao.ProductDAO;
+import it.contrader.dao.ProductRepository;
 import it.contrader.dto.ProductDTO;
 import it.contrader.model.Product;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 public class ProductService extends AbstractService<Product, ProductDTO> {
 
-	//Istanzio DAO  e Converter specifici.
-	public ProductService(){
-		this.dao = new ProductDAO();
-		this.converter = new ProductConverter();
-	}
+    @Autowired
+    private ProductConverter converter;
+    @Autowired
+    private UserConverter userConverter;
+    @Autowired
+    private CenterConverter centerConverter;
+    @Autowired
+    private ProductRepository repository;
 
-	public List<ProductDTO> getAllProductNotDeleted(){
-		ProductDAO productDAO = new ProductDAO();
-		return converter.toDTOList(productDAO.getAllProductNotDeleted());
-	}
+    @Autowired
+    private CenterRepository centerRepository;
 
-	public List<ProductDTO> filterBy(String value){
-		ProductDAO productDAO = new ProductDAO();
-		switch(value.toUpperCase()){
-			case "PREZZO":
-				return converter.toDTOList(productDAO.getAll_By_PRICE());
+    public boolean checkIfUserIsProductOwner (UserDTO user, ProductDTO productDTO) {
+        List<Product> products = repository.getIfUserIsProductOwner(userConverter.toEntity(user), converter.toEntity(productDTO));
+        return (products.size() > 0);
+    }
 
-			case "DATA":
-				return converter.toDTOList(productDAO.getAll_By_DATA());
+    public List<ProductDTO> findByDeletedFalseAndCenterId(long centerId){
+        return converter.toDTOList(repository.findByDeletedFalseAndCenterId(centerId));
+    }
 
-			case "ORDINE":
-				return converter.toDTOList(productDAO.getAll_By_OFFERS());
+    public List<ProductDTO> findByDeletedFalse(){
+        return converter.toDTOList(repository.findByDeletedFalse());
+    }
 
-			default:
-				return converter.toDTOList(productDAO.getAllProductNotDeleted());
-		}
-	}
-	@Override
-	public boolean delete(int id) {
-		ProductDAO productdao = new ProductDAO();
-		return productdao.delete(id);
-	}
+    public List<ProductDTO> getAll(String filter){
+        if(filter == null) {
+            return converter.toDTOList(repository.findByDeletedFalseOrderByTitleAsc());
+        } else {
+            List<ProductDTO> productsList;
+            switch(filter){
+                case "nameAsc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByTitleAsc());
+                    break;
+                case "nameDesc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByTitleDesc());
+                    break;
+                case "priceAsc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByPriceAsc());
+                    break;
+                case "priceDesc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByPriceDesc());
+                    break;
+                case "discountAsc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByDiscountAsc());
+                    break;
+                case "discountDesc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByDiscountDesc());
+                    break;
+                case "startDateAsc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByStartDiscountDateAsc());
+                    break;
+                case "startDateDesc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByStartDiscountDateDesc());
+                    break;
+                case "endDateAsc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByEndDiscountDateAsc());
+                    break;
+                case "endDateDesc":
+                    productsList = converter.toDTOList(repository.findByDeletedFalseOrderByEndDiscountDateDesc());
+                    break;
+                default:
+                    productsList = converter.toDTOList(repository.findByDeletedFalse());
+                    break;
+            }
+            return productsList;
+        }
+    }
 
 
-	public List<ProductDTO> getAllProductBySelectedCenter(int center_id){
-		ProductDAO productDAO = new ProductDAO();
-		return converter.toDTOList(productDAO.getAllProductBySelectedCenter(center_id));
-	}
+    public List<ProductDTO> getAllProductsByAdminNot(UserDTO userDTO, String filter){
+        List<ProductDTO> productsList = null;
+        if(filter == null) {
+            return converter.toDTOList(repository.getAllProductsByAdminNotOrderByTitleAsc(userConverter.toEntity(userDTO)));
+        } else {
+            switch(filter){
+                case "nameAsc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByTitleAsc(userConverter.toEntity(userDTO)));
+                    break;
+                case "nameDesc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByTitleDesc(userConverter.toEntity(userDTO)));
+                    break;
+                case "priceAsc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByPriceAsc(userConverter.toEntity(userDTO)));
+                    break;
+                case "priceDesc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByPriceDesc(userConverter.toEntity(userDTO)));
+                    break;
+                case "discountAsc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByDiscountAsc(userConverter.toEntity(userDTO)));
+                    break;
+                case "discountDesc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByDiscountDesc(userConverter.toEntity(userDTO)));
+                    break;
+                case "startDateAsc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByStartDiscountDateAsc(userConverter.toEntity(userDTO)));
+                    break;
+                case "startDateDesc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByStartDiscountDateDesc(userConverter.toEntity(userDTO)));
+                    break;
+                case "endDateAsc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByEndDiscountDateAsc(userConverter.toEntity(userDTO)));
+                    break;
+                case "endDateDesc":
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNotOrderByEndDiscountDateDesc(userConverter.toEntity(userDTO)));
+                    break;
+                default:
+                    productsList = converter.toDTOList(repository.getAllProductsByAdminNot(userConverter.toEntity(userDTO)));
+                    break;
+            }
+        }
+        return productsList;
+    }
+
+    @Override
+    public void delete (long id) {
+        repository.logicalDelete(id);
+    }
+
+    public void updateQtyDecreaseByOne(long id) {
+        repository.updateQtyDecreaseByOne(id);
+    }
+
 }

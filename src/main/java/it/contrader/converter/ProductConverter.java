@@ -1,72 +1,52 @@
 package it.contrader.converter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import it.contrader.dto.ProductDTO;
-import it.contrader.dto.UserDTO;
+
 import it.contrader.model.Product;
-import it.contrader.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductConverter implements Converter<Product, ProductDTO> {
-	public ProductDTO toDTO(Product product) {
-		int Id = product.getId();
-		int Center_id = product.getCenter_id();
-		String Title = String.valueOf(product.getTitle());
-		String Description = String.valueOf(product.getDescription());
-		Float Price = product.getPrice();
-		Float Discount= product.getDiscount();
-		String Start_discount_date = product.getStart_discount_date();
-		String End_discount_date = product.getEnd_discount_date();
-		ProductDTO productDTO = new ProductDTO(
-				Id,
-				Center_id,
-				Title,
-				Description,
-				Price,
-				Discount,
-				Start_discount_date,
-				End_discount_date
-		);
+@Component
+public class ProductConverter extends AbstractConverter<Product, ProductDTO> {
 
-		return productDTO;
-	}
+    @Autowired
+    private CenterConverter converter;
+    @Override
+    public Product toEntity(ProductDTO productDTO) {
+        Product product = null;
+        if (productDTO != null) {
+            product = new Product(productDTO.getId(), productDTO.getTitle(), productDTO.getDescription(), productDTO.getPrice(), productDTO.getDiscount(), productDTO.getQty(), productDTO.getStartDiscountDate(), productDTO.getEndDiscountDate(),  converter.toEntity(productDTO.getCenter()));
+        }
+        return product;
+    }
 
-	/**
-	 * Crea un oggetto di tipo User e lo riempie con i campi del parametro user di tipo UserDTO.
-	 * Notare l'uso del metodo get() per ottenere il valore dell'attributo-
-	 */
-	public Product toEntity(ProductDTO productDTO) {
-		Product product = new Product(
-				productDTO.getId(),
-				productDTO.getCenter_id(),
-				productDTO.getTitle(),
-				productDTO.getDescription(),
-				productDTO.getPrice(),
-				productDTO.getDiscount(),
-				productDTO.getStart_discount_date(),
-				productDTO.getEnd_discount_date()
-		);
+    @Override
+    public ProductDTO toDTO(Product product) {
+        ProductDTO productDTO = null;
+        if (product != null) {
+            productDTO = new ProductDTO(product.getId(), product.getTitle(), product.getDescription(), product.getPrice(), product.getDiscount(), product.getQty(), product.getStartDiscountDate(), product.getEndDiscountDate(), converter.toDTO(product.getCenter()) );
 
-		return product;
-	}
+        }
+        return productDTO;
+    }
 
-	/**
-	 * Metodo per convertire le liste di Center.
-	 */
-	public List<ProductDTO> toDTOList(List<Product> productList) {
-		//Crea una lista vuota.
-		List<ProductDTO>productDTOList = new ArrayList<ProductDTO>();
+    public List<ProductDTO> toDTOList(List<Product> products){
 
-		//Cicla tutti gli elementi della lista e li converte uno a uno
-		for(Product product : productList) {
-			//Utilizza il metodo toDTO per convertire ogni singolo elemento della lista
-			//e lo aggiunge adda lista di DTO
-			productDTOList.add(toDTO(product));
-		}
-		return productDTOList;
-	}
+        List<ProductDTO>productDTOList = new ArrayList<ProductDTO>();
+
+        //Cicla tutti gli elementi della lista e li converte uno a uno
+        for(Product product : products) {
+            //Utilizza il metodo toDTO per convertire ogni singolo elemento della lista
+            //e lo aggiunge adda lista di DTO
+            productDTOList.add(toDTO(product));
+        }
+        return productDTOList;
 
 
+    }
 
 }
