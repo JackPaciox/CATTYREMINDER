@@ -1,59 +1,97 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.List"  import="it.contrader.dto.UserDTO"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1" import="java.util.List"
+         import="it.contrader.dto.UserDTO" import="it.contrader.dto.ProductDTO" %>
+<%@include file="/tpl/bootstrap.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Home Admin</title>
-
+    <meta charset="ISO-8859-1">
+    <%
+        session.setAttribute("currentSection","home");
+        String selectAttribute = "";
+        if (request.getAttribute("selectedFilters") != null) {
+            selectAttribute = (String)request.getAttribute("selectedFilters");
+        }
+    %>
+    <%@include file="tpl/head.jsp" %>
+    <title>Home Admin</title>
 </head>
 <body>
 
-<% request.getSession().setAttribute("currentSection", "home"); %>
-<%@include file="/css/header.jsp"%>
-<%--
-  <div class="navbar">
-  <% UserDTO u = (UserDTO) session.getAttribute("dto");
-  String usertype = u.getUsertype().toString();
-  %>
-<%if (usertype.equals("USER")) {%>
-  <a href="homeadmin.jsp">Home</a>
-  <a class="pippo" href=UserServlet?mode=read&update=true&id=<%=u.getId()%>>User</a>
-  <a class="active"  href="CenterServlet?mode=list">Center</a>
-  <a href="ProductServlet?mode=list">Products</a>
-  <a href="OrderServlet?mode=list">Order</a>
-  <a href="LogoutServlet" id="logout">Logout</a>
-<%}%>
-<%if (usertype.equals("ADMIN")) {%>
-  <a href="homeadmin.jsp">Home</a>
-  <a href=UserServlet?mode=read&update=true&id=u.getId>User</a>
-  <a href="#">Imposta come utente</a>
-  <a class="active"  href="CenterServlet?mode=list">Center</a>
-  <a href="LogoutServlet" id="logout">Logout</a>
-<%}%>
-<%if (usertype.equals("SUPERADMIN")) {%>
-  <a href="homeadmin.jsp">Home</a>
-  <a href="UserServlet?mode=list">Users</a>
-  <a class="active"  href="CenterServlet?mode=list">Center</a>
-  <a href="LogoutServlet" id="logout">Logout</a>
-<%}%>
-</div>
-
---%>
+<%@include file="tpl/navbar.jsp"%>
 
 <div class="main">
-<h1>Welcome ${user.getUsername()}</h1>
+    <h1>Ciao ${currentUser.getFirstname()}</h1>
 
+    <h2>Benvenuto in Health Welnness! Scegli la sezione che più ti aggrada.</h2>
 
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    <div class="row" id="listItems">
+        <form method="GET" action="<%=request.getContextPath()%>/products/dashboard" id="productOffersFilter">
+            <div id="selectContainer">
+                <select id="selectFilter" name="filter">
+                    <option value="nameAsc" <% if(selectAttribute.equals("nameAsc") || selectAttribute == null){%>selected<%}%>>Nome A-Z</option>
+                    <option value="nameDesc" <% if(selectAttribute.equals("nameDesc")){%>selected<%}%>>Nome Z-A</option>
+                    <option value="priceAsc" <% if(selectAttribute.equals("priceAsc")){%>selected<%}%>>Prezzo crescente</option>
+                    <option value="priceDesc" <% if(selectAttribute.equals("priceDesc")){%>selected<%}%>>Prezzo descrescente</option>
+                    <option value="discountAsc" <% if(selectAttribute.equals("discountAsc")){%>selected<%}%>>Sconto crescente</option>
+                    <option value="discountDesc" <% if(selectAttribute.equals("discountDesc")){%>selected<%}%>>Sconto decrescente</option>
+                    <option value="startDateAsc" <% if(selectAttribute.equals("startDateAsc")){%>selected<%}%>>Data inizio offerta crescente</option>
+                    <option value="startDateDesc" <% if(selectAttribute.equals("startDateDesc")){%>selected<%}%>>Data inizio offerta decrescente</option>
+                    <option value="endDateAsc" <% if(selectAttribute.equals("endDateAsc")){%>selected<%}%>>Data fine offerta crescente</option>
+                    <option value="endDateDesc" <% if(selectAttribute.equals("endDateDesc")){%>selected<%}%>>Data fine offerta decrescente</option>
+                </select>
+            </div>
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    Nome
+                </th>
+                <th>Descrizione</th>
+                <th>
+                    Prezzo
+                </th>
+                <th>
+                    Scontato
+                </th>
+                <th>Q.tà disponibile</th>
+                <th>
+                    Inizio offerta
+                </th>
+                <th>
+                    Fine offerta
+                </th>
+            </tr>
+            </thead>
 
+                            <tbody>
+                            <%
+                                List<ProductDTO> list = (List)request.getAttribute("productsList");
+                                for (ProductDTO p : list) {
+                            %>
+                            <tr>
+                                <td><a href="<%=request.getContextPath()%>/products/read/<%=p.getId()%>">
+                                    <%=p.getTitle()%>
+                                </a></td>
+                                <td><span class="ellipsize"><%=p.getDescription()%></span></td>
+                                <td><%=p.getPrice()%> &euro;</td>
+                                <td><%=p.getDiscount()%> &euro;</td>
+                                <td><%=p.getQty()%> pz.</td>
+                                <td><%=p.getStartDiscountDate()%></td>
+                                <td><%=p.getEndDiscountDate()%></td>
+                            </tr>
+                            <%
+                                }
+                            %>
+                            </tbody>
+
+        </table>
+    </div>
 </div>
 
 
-<%@ include file="/css/footer.jsp" %>
+<%@include file="tpl/footer.jsp" %>
 
 </body>
 </html>
