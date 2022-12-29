@@ -6,12 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 //import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.Cattyreminder.cattyreminder.dto.ProjectDTO;
 import com.Cattyreminder.cattyreminder.dto.UserDTO;
 
 import com.Cattyreminder.cattyreminder.model.ContactSetting;
 import com.Cattyreminder.cattyreminder.model.Preferences;
 import com.Cattyreminder.cattyreminder.model.User;
 import com.Cattyreminder.cattyreminder.model.User.Usertype;
+import com.Cattyreminder.cattyreminder.service.ProjectService;
 import com.Cattyreminder.cattyreminder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,56 +27,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+//project/add
 @Controller
-@RequestMapping("/project")
-public class ProjectController {
+@RequestMapping("/projects")
+public class ProjectController extends AbstractController<ProjectDTO> {
 
     @Autowired
-    private UserService service;
+    private ProjectService service;
 
 
-//    @PostMapping("/login")
-//    public String login(HttpServletRequest request, @RequestParam(value = "username", required = true) String username,
-//                      @RequestParam(value = "password", required = true) String password, @RequestParam(value= "errorLogin", required = false) String error,
-//                      HttpServletResponse response) throws Exception {
-//
-//        UserDTO userDTO = service.findByUsernameAndPassword(username, password);
-//        if(userDTO != null){
-//            System.out.println("accesso");
-//            return "User/home";
-////            request.getSession().setAttribute("currentUser", userDTO);
-////            response.sendRedirect(request.getContextPath() + "/users/dashboard");
-//        }else {
-//            System.out.println("accesso negato");
-//            request.getSession().setAttribute("errorLogin",true);
-//            response.sendRedirect(request.getContextPath() + "/users/logout");
-//        }
-//        return "index";
-//
-//    }
-//    @GetMapping("/list")
-//    public String getAll(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        UserDTO user = (UserDTO) request.getSession().getAttribute("currentUser");
-//        if (service.isSuperadmin(user)){
-//            setAll(request);
-//            return "user/user";
-//        }else{
-//            request.getSession().invalidate();
-//            response.sendRedirect(request.getContextPath()+"/");
-//            return null;
-//        }
-//    }
 
-//    @GetMapping("/delete/{id}")
-//    public String delete(HttpServletRequest request, @PathVariable("id") Long id, HttpServletResponse response) throws Exception {
-//        service.delete(id);
-//        String urlRedirect = request.getContextPath()+"/users/logout";
-//        if (service.isSuperadmin((UserDTO)request.getSession().getAttribute("currentUser"))) {
-//            urlRedirect = request.getHeader("Referer");
-//        }
-//        response.sendRedirect(urlRedirect);
-//        return null;
-//    }
+    @GetMapping("/add")
+    public String add(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println("sono passato per di qua");
+        return "project/insert";
+    }
 
 //    @GetMapping("/edit/{id}")
 //    public String preUpdate(HttpServletRequest request, @PathVariable("id") Long id,HttpServletResponse response) throws Exception {
@@ -121,6 +88,7 @@ public class ProjectController {
 //        return null;
 //    }
 
+//
 //    @PostMapping("/insert")
 //    public String insert(HttpServletRequest request, @RequestParam("password") String password,
 //                         @RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname,

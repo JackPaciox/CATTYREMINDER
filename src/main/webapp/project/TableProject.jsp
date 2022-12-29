@@ -1,3 +1,4 @@
+
     <div class="card shadow">
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Employee Info</p></div>
@@ -31,7 +32,7 @@
                 </thead>
                 </table>
                 <%
-                    List<ProjectDTO> list = (List)request.getSession().getAttribute("projects");
+                    List<ProjectDTO> list = (List<ProjectDTO>) request.getSession().getAttribute("projects");
                     for (ProjectDTO p : list) {
                 %>
                 <table class="table my-0" id="dataTable">
@@ -40,8 +41,7 @@
                         <td><a href=${pageContext.request.contextPath}/project/read/<%=p.getId()%>>
                             <%=p.getName()%>
                         </a></td>
-                        <td><%=p.getDescription()%></td>
-                        <td><%=u.getCreator()%></td>
+
                         <td><a href="${pageContext.request.contextPath}/project/preupdate/<%=p.getId()%>" class="item-btn update-btn">Modifica</a></td>
                         <td><a href="${pageContext.request.contextPath}/project/delete/<%=p.getId()%>" class="item-btn remove-btn">Elimina</a></td>
                     </tbody>
@@ -51,8 +51,8 @@
                             <div class="collapse show" id="collapse-4">
                                 <div class="card-body">
                                 <%
-                                    List<SegmentDTO> list = (List)request.getSession().getAttribute("segment"+p.getId().toString());
-                                    for (SegmentDTO s : list) {
+                                    List<SegmentDTO> listSEGMENT = (List<SegmentDTO>) request.getSession().getAttribute("segment"+p.getId().toString());
+                                    for (SegmentDTO s : listSEGMENT) {
                                 %>
                                 <table class="table my-0" id="dataTable">
                                     <tbody>
@@ -61,7 +61,7 @@
                                             <%=s.getName()%>
                                         </a></td>
                                         <td>
-                                            <div class="progress-bar bg-warning" aria-valuenow=<%=s.status()%> aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="visually-hidden"><%=s.status()%>%</span></div>
+                                            <div class="progress-bar bg-warning" aria-valuenow=<%=s.getState()%> aria-valuemin="0" aria-valuemax="100" style="width: 40%;"><span class="visually-hidden"><%=s.getState()%>%</span></div>
                                         </td>
                                     </tbody>
                                   </table>

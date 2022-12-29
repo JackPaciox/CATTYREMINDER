@@ -37,12 +37,21 @@ public class EventService extends AbstractService<Event, EventDTO> {
 	 */
     public List<EventDTO> getAllByUserAndDate(UserDTO user, LocalDate date) {
         UserConverter userConverter = new UserConverter();
+        try{
         return converter.toDTOList(((EventRepository)repository).findByUsersAndDate(userConverter.toEntity(user),date));
+    }catch (Exception exception){
+        return null;
+    }
     }
 
     public List<EventDTO> getAllByUser(UserDTO user) {
         UserConverter userConverter = new UserConverter();
+        try{
         return converter.toDTOList(((EventRepository)repository).findByUsers(userConverter.toEntity(user)));
+    }catch (Exception exception){
+        return null;
+    }
+
     }
 //
 //    public byte[] convertToByteArray(MultipartFile file) throws IOException {

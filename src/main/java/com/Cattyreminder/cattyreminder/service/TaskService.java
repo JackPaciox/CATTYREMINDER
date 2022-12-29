@@ -13,6 +13,7 @@ import com.Cattyreminder.cattyreminder.model.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Estende AbstractService con parametri User e UserDTO.
@@ -37,6 +38,7 @@ public class TaskService extends AbstractService<Task, TaskDTO> {
 		return converter.toDTOList((UserRepository)repository.findByUsertype(User.Usertype.ADMIN));
 	}
 	 */
+
     public Iterable<TaskDTO> findByUserAndStart_date(UserDTO user, LocalDate date) {
         UserConverter userConverter = new UserConverter();
         return converter.toDTOList(((TaskRepository)repository).findByUserAndStartDate(userConverter.toEntity(user),date));
@@ -44,7 +46,14 @@ public class TaskService extends AbstractService<Task, TaskDTO> {
 
     public Iterable<TaskDTO> findByUserAndEnd_date(UserDTO user, LocalDate date) {
         UserConverter userConverter = new UserConverter();
-        return converter.toDTOList(((TaskRepository)repository).findByUserAndEndDate(userConverter.toEntity(user),date));
+
+        try{
+           List<TaskDTO> TASKS = converter.toDTOList(((TaskRepository)repository).findByUserAndEndDate(userConverter.toEntity(user),date));
+            return TASKS;
+        }catch (Exception ex){
+            System.out.println();
+            return null;
+        }
     }
 
     public Iterable<TaskDTO> findBySegment(SegmentDTO segment) {

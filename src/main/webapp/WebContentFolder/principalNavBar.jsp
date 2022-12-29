@@ -26,7 +26,7 @@
                                 <a class="nav-link" href="#">Events</a>
                             </li>
                         </ul>
-                        <button class="btn btn-primary" type="button">Log Out</button>
+                        <button class="btn btn-primary" type="button" href="users/logout" >Log Out</button>
                     </div>
                 </div>
             </nav>

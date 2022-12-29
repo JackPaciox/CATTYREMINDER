@@ -3,7 +3,6 @@ package com.Cattyreminder.cattyreminder.dao;
 import com.Cattyreminder.cattyreminder.model.Segment;
 import com.Cattyreminder.cattyreminder.model.Task;
 import com.Cattyreminder.cattyreminder.model.User;
-import com.Cattyreminder.cattyreminder.model.User.Usertype;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +26,7 @@ public interface TaskRepository extends CrudRepository<Task, Long>{
 
     List<Task> findByUser(User user);
 
-    List<Task> findByUserAndEndDate(User user,LocalDate date);
+    List<Task> findByUserAndEndDate(User user,LocalDate endDate);
 
     List<Task> findByUserAndStartDate(User user, LocalDate date);
 

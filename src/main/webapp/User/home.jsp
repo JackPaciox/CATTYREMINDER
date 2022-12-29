@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-pageEncoding="ISO-8859-1" import="java.util.List"%>
-
+pageEncoding="ISO-8859-1" import="java.util.List"
+import="com.Cattyreminder.cattyreminder.dto.UserDTO"
+import="com.Cattyreminder.cattyreminder.dto.ProjectDTO"
+import="com.Cattyreminder.cattyreminder.dto.TaskDTO"
+import="com.Cattyreminder.cattyreminder.dto.EventDTO"
+ import="com.Cattyreminder.cattyreminder.dto.SegmentDTO"%>
+<%UserDTO u = (UserDTO) request.getSession().getAttribute("currentUser");%>
 <%@include file="/WebContentFolder/head.jsp" %>
 <%@include file="/WebContentFolder/principalNavBar.jsp" %>
 <%@include file="/WebContentFolder/secondaryNavBar.jsp" %>
@@ -12,113 +17,40 @@ pageEncoding="ISO-8859-1" import="java.util.List"%>
 	<div class="row">
 
 	    <div class="col">
-	    <%include file="./prject/TableProject.jsp" %>
-
+	    <% Boolean isnull = (Boolean) request.getSession().getAttribute("projectnull");
+	    if(isnull){%>
+	    <%System.out.println("nessun progetto trovato");%>
+        <%}else{%>
+        <%System.out.println("progetti trovati");%>
+        	            	    <%@include file="/project/TableProject.jsp" %>
+        <%}%>
+            <a href="/projects/add">
+        			<button class="btn btn-primary" type="button" >Add Project</button>
+            </a>
+        </div>
 		<div class="col">
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="text-primary fw-bold m-0">Today task</h6>
-				</div>
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item">
-						<div class="row align-items-center no-gutters">
-							<div class="col me-2">
-								<h6 class="mb-0"><strong>Lunch meeting</strong></h6>
-								<span class="text-xs">10:30 AM</span>
-							</div>
-							<div class="col-auto">
-								<i class="fas fa-trash-alt"></i>
-							</div>
-							<div class="col-auto">
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="formCheck-4">
-									<label class="form-check-label" for="formCheck-4"></label>
-								</div>
-							</div>
-						</div>
-					</li>
-					<li class="list-group-item">
-						<div class="row align-items-center no-gutters">
-							<div class="col me-2"><h6 class="mb-0">
-								<strong>Lunch meeting</strong>
-							</h6>
-								<span class="text-xs">11:30 AM</span>
-							</div>
-							<div class="col-auto">
-								<i class="fas fa-trash-alt"></i>
-							</div>
-							<div class="col-auto">
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="formCheck-2">
-									<label class="form-check-label" for="formCheck-2"></label>
-								</div>
-							</div>
-						</div>
-					</li>
-					<li class="list-group-item">
-						<div class="row align-items-center no-gutters">
-							<div class="col me-2">
-								<h6 class="mb-0"><strong>Lunch meeting</strong></h6>
-								<span class="text-xs">12:30 AM</span>
-							</div>
-							<div class="col-auto">
-								<i class="fas fa-trash-alt"></i>
-							</div>
-							<div class="col-auto">
-								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="formCheck-3">
-									<label class="form-check-label" for="formCheck-3"></label>
-								</div>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-			<button class="btn btn-primary" type="button">Add task</button>
+			    <% Boolean taskisnull = (Boolean) request.getSession().getAttribute("tasknull");
+        	    if(taskisnull){%>
+        	        <%System.out.println("nessuna task trovata");%>
+                <%}else{%>
+                    <%System.out.println("task trovate");%>
+                	<%@include file="/task/List.jsp" %>
+                <%}%>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col">
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="text-primary fw-bold m-0">Today Event</h6>
-				</div>
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item">
-						<div class="row align-items-center no-gutters">
-							<div class="col me-2">
-								<h6 class="mb-0"><strong>Call meeting</strong></h6>
-								<span class="text-xs">10:30 AM</span>
-							</div>
-							<div class="col-auto">
-								<button class="btn btn-primary" type="button">Enter call</button>
-							</div>
-						</div>
-					</li>
-					<li class="list-group-item">
-						<div class="row align-items-center no-gutters">
-							<div class="col me-2">
-								<h6 class="mb-0"><strong>Lunch meeting</strong></h6>
-								<span class="text-xs">11:30 AM</span>
-							</div>
-							<div class="col-auto">
-								<button class="btn btn-primary" type="button">Enter call</button>
-							</div>
-						</div>
-					</li>
-					<li class="list-group-item">
-						<div class="row align-items-center no-gutters">
-							<div class="col me-2">
-								<h6 class="mb-0"><strong>Lunch meeting</strong></h6>
-								<span class="text-xs">12:30 AM</span>
-							</div>
-							<div class="col-auto">
-								<button class="btn btn-primary" type="button">Enter call</button>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
+			    <% Boolean eventisnull = (Boolean) request.getSession().getAttribute("eventnull");
+        	    if(eventisnull){%>
+        	        <%System.out.println("nessuna evento trovato");%>
+                <%}else{%>
+                    <%System.out.println("eventi trovati");%>
+                	<%@include file="/event/List.jsp" %>
+                <%}%>
+            <div class="col-auto">
+
+		        <button class="btn btn-primary" type="button">Enter call</button>
+		    </div>
 		</div>
 	</div>
 </div>

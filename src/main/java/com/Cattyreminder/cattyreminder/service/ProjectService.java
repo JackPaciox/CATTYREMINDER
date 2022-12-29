@@ -39,8 +39,14 @@ public class ProjectService extends AbstractService<Project, ProjectDTO> {
 
     public List<ProjectDTO> getAllByUser(UserDTO user) {
         UserConverter userConverter = new UserConverter();
+
+        try{
         return converter.toDTOList(((ProjectRepository)repository).findByUser(userConverter.toEntity(user)));
+    }catch (Exception exception){
+            return null;
+        }
     }
+
 //
 //    public byte[] convertToByteArray(MultipartFile file) throws IOException {
 //        byte [] byteArr = null;

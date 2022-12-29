@@ -31,14 +31,15 @@ public class UserController {
     @GetMapping("/home")
     public String getHome(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        System.out.println("bella sono nella home");
         UserDTO user = (UserDTO) request.getSession().getAttribute("currentUser");
+        System.out.println("bella sono nella home"+ user );
+
         if (service.isAdmin(user)){
             setAllAdmin(request);
-            return "user/index";
+            return "User/home";
         }else{
             setAllAdmin(request);
-            return "user/index";
+            return "User/home";
         }
     }
 
@@ -51,8 +52,9 @@ public class UserController {
         UserDTO userDTO = service.findByUsernameAndPassword(username, password);
         if(userDTO != null){
             System.out.println("accesso");
+            System.out.println(userDTO);
             request.getSession().setAttribute("currentUser", userDTO);
-            response.sendRedirect(request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/users/home");
         }else {
             System.out.println("accesso negato");
             request.getSession().setAttribute("errorLogin",true);
@@ -190,21 +192,49 @@ public class UserController {
     }
 
     private void setAllAdmin(HttpServletRequest request) {
+        System.out.println("sono nel setall");
         UserDTO user = (UserDTO) request.getSession().getAttribute("currentUser");
+
+        LocalDate oraAttuale =  LocalDate.now();
         TaskService taskService = new TaskService();
+        List<TaskDTO> todayTaskDTO = (List<TaskDTO>) taskService.findByUserAndEnd_date(user,oraAttuale);
+        if (todayTaskDTO != null) {
+            request.getSession().setAttribute("tasknull", Boolean.FALSE);
+            request.getSession().setAttribute("todayTask", todayTaskDTO);
+        }else {
+            request.getSession().setAttribute("tasknull", Boolean.TRUE);
+        }
         SegmentService segmentService = new SegmentService();
-        List<TaskDTO> todayTaskDTO = (List<TaskDTO>) taskService.findByUserAndEnd_date(user, LocalDate.now());
-        request.getSession().setAttribute("todayTask", todayTaskDTO);
+
+        System.out.println(oraAttuale);
+
+
+
         ProjectService projectService = new ProjectService();
         List<ProjectDTO> projectDTOS = projectService.getAllByUser(user);
-        for (ProjectDTO p : projectDTOS ) {
+
+        if (projectDTOS != null){
+            request.getSession().setAttribute("projectnull", Boolean.FALSE);
+            for (ProjectDTO p : projectDTOS ) {
+            System.out.println("inizio ciclatura");
             List<SegmentDTO> segment = segmentService.getAllByProject(p);
             request.getSession().setAttribute("segment"+ p.getId(), segment);
         }
+        System.out.println("fine ciclatura");
         request.getSession().setAttribute("projectList", projectDTOS);
+    }
+        else {
+            request.getSession().setAttribute("projectnull", Boolean.TRUE);
+        }
         EventService eventService = new EventService();
         List<EventDTO> eventDTOS = eventService.getAllByUser(user);
-        request.getSession().setAttribute("event", eventDTOS);
+        if (eventDTOS != null) {
+            request.getSession().setAttribute("eventnull", Boolean.FALSE);
+            request.getSession().setAttribute("event", eventDTOS);
+        }else {
+            request.getSession().setAttribute("eventnull", Boolean.TRUE);
+        }
+
     }
     private void setAll(HttpServletRequest request) {
         request.getSession().setAttribute("list", service.getAll());
